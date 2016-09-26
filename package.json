@@ -17,6 +17,8 @@
   },
   "homepage": "https://github.com/tgaff/tunely#readme",
   "dependencies": {
-    "express": "^4.13.3"
+    "express": "^4.14.0",
+    "mongoose": "^4.6.1",
+    "nodemon": "^1.10.2"
   }
 }
