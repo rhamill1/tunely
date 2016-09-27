@@ -1,13 +1,18 @@
 // SERVER-SIDE JAVASCRIPT
 
 //require express in our app
-var express = require('express');
 var db = require("./models");
-// generate a new express app and call it 'app'
+var express = require('express');
+var bodyParser = require('body-parser');
 var app = express();
 
-// serve static files from public folder
 app.use(express.static(__dirname + '/public'));
+app.use(bodyParser.urlencoded({extended: true}));
+// generate a new express app and call it 'app'
+
+
+// serve static files from public folder
+
 
 /************
  * DATABASE *
@@ -49,9 +54,14 @@ app.get('/api/albums', function album_index(req, res){
   });
 });
 
-
-
-
+app.post('/api/albums', function (req, res) {
+  var newAlbum = new db.Album(req.body);
+  // console.log(newAlbum)
+  newAlbum.save(function (error, savedData) {
+    if (error){console.log(error)};
+      res.json(savedData);
+  });
+});
 
 /**********
  * SERVER *

@@ -9,31 +9,11 @@
 
 /* hard-coded data! */
 var sampleAlbums = [];
-// sampleAlbums.push({
-//              artistName: 'Ladyhawke',
-//              name: 'Ladyhawke',
-//              releaseDate: '2008, November 18',
-//              genres: [ 'new wave', 'indie rock', 'synth pop' ]
-//            });
-// sampleAlbums.push({
-//              artistName: 'The Knife',
-//              name: 'Silent Shout',
-//              releaseDate: '2006, February 17',
-//              genres: [ 'synth pop', 'electronica', 'experimental' ]
-//            });
-// sampleAlbums.push({
-//              artistName: 'Juno Reactor',
-//              name: 'Shango',
-//              releaseDate: '2000, October 9',
-//              genres: [ 'electronic', 'goa trance', 'tribal house' ]
-//            });
-// sampleAlbums.push({
-//              artistName: 'Philip Wesley',
-//              name: 'Dark Night of the Soul',
-//              releaseDate: '2008, September 12',
-//              genres: [ 'piano' ]
-//            });
-/* end of hard-coded data */
+var $albumList;
+
+$(document).ready(function() {
+  console.log('app.js loaded!');
+  // renderAlbums(sampleAlbums);
 
 $.ajax({
   method: 'GET',
@@ -47,18 +27,13 @@ $.ajax({
 
 });
 
-$(document).ready(function() {
-  console.log('app.js loaded!');
-  // renderAlbums(sampleAlbums);
-});
 
-
-function renderAlbums(albumArray) {
-  albumArray.forEach(
-    function(album, index){
-      renderAlbum(album);
-    });
-};
+  function renderAlbums(albumArray) {
+    albumArray.forEach(
+      function(album, index){
+        renderAlbum(album);
+      });
+  };
 
 
 // this function takes a single album and renders it to the page
@@ -108,5 +83,32 @@ function renderAlbum(album) {
   // render to the page with jQuery
   $('#albums').append(albumHtml);
 
+};
 
-}
+  $('#singlebutton').on('click', function(e) {
+    e.preventDefault();
+    var newAlbum = $('.form-horizontal').serialize();
+    // console.log(newAlbum);
+    $.ajax({
+      method: 'POST',
+      url: '/api/albums',
+      data: newAlbum,
+      success: newAlbumSuccess
+    });
+
+
+
+    $('.form-horizontal').trigger('reset');
+  });
+
+  function newAlbumSuccess(json) {
+        sampleAlbums.push(json);
+        render(json);
+  };
+
+  function render() {
+    $albumList.empty();
+    $albumList.append(json);
+  };
+
+});
